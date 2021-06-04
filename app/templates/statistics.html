@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>PlanaraChrome</title>
+        {% endif %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+    </head>
+
+    <body>
+        <div class="topnav">
+            <p class="left">PlanaraChrome</p>
+            <a class="left upload" href="#" onclick="proceed_notice();return false;">Upload</a>
+            <a class="left mask" href="{{ url_for('mask_editor', mode='segmented') }}">Mask</a>
+            <a class="left settings" href="{{ url_for('settings') }}">Settings</a>
+            <a class="active left results" href="{{ url_for('export_data') }}">Results</a>
+            <a class="right" href="{{ url_for('help') }}">?</a>
+        </div>
+        <script>
+            function proceed_notice() {
+                var r = confirm("Returning to the file upload page will cause all\n"
+                                + "mask edits to be reset. Would you like to proceed?");
+                if (r == true) {
+                    window.location.href = "{{ url_for('index') }}";
+                } 
+            }
+        </script>
+
+        <div class="main">
+            <div class="panel" style="width: 1000px; margin-right: 2em; margin-bottom: 2em; clear: both; float: left"> 
+                <a href="{{ url_for('data', filename = files[0]) }}" download>
+                    <img src="/static/images/download.png" style="width:10%;float:right;" title="Data Download" alt="download-icon">
+                    <p style="float:right;">Data Download</p>
+                </a>
+
+                <table id="data_table" style="clear:both;padding-top:1em;"></table>
+
+                <!--https://stackoverflow.com/questions/36104089
+                    /read-csv-file-from-a-location-and-display-as-html-table-->
+                <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
+                <script>
+                    function arrayToTable(tableData) {
+                        var table = $('<table></table>');
+                        $(tableData).each(function (i, rowData) {
+                            var row = $('<tr></tr>');
+                            $(rowData).each(function (j, cellData) {
+                                row.append($('<td>'+cellData+'</td>'));
+                            });
+                            table.append(row);
+                        });
+                        return table;
+                    }
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ url_for('data', filename = files[0]) }}",
+                        success: function (data) {
+                            $('#data_table').html(arrayToTable(Papa.parse(data).data));
+                        }
+                    });
+                </script>
+            </div>
+
+
+            <div id="percentile-histogram" class="left panel" style="width:510px;margin-right:2em;margin-bottom:2em;">
+                <a href="{{ url_for('histogram', filename = files[1]) }}" download>
+                    <img src="/static/images/download.png" style="width:10%;float:right;" title="Histogram Download" alt="download-icon">
+                    <p style="float:right;">Intensity Histogram Download</p>
+                </a>
+
+                <img src="{{ url_for('histogram', filename = files[1]) }}" style="width:100%;clear:right;padding-top:1em;">
+            </div>
+
+            <div id="area-histogram" class="left panel" style="width:510px;margin-right:2em;margin-bottom:2em;">
+                <a href="{{ url_for('histogram', filename = files[2]) }}" download>
+                    <img src="/static/images/download.png" style="width:10%;float:right;" title="Histogram Download" alt="download-icon">
+                    <p style="float:right;">Area Histogram Download</p>
+                </a>
+
+                <img src="{{ url_for('histogram', filename = files[2]) }}" style="width:100%;clear:right;padding-top:1em;">
+            </div>
+        </div>
+    </body>
+    <footer>
+        <p><center>Keene State College - BCI/AI & Pellettieri Labs</center></p>
+    </footer>
+</html>

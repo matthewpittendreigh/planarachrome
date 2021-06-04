@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>PlanaraChrome</title>
+        {% endif %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type=text/javascript>
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
+    </head>
+    <body>
+        <div class="topnav">
+            <p class="left">PlanaraChrome</p>
+            <a class="active left" href="{{ url_for('settings') }}">Settings</a>
+        </div>
+
+        <div class="left panel main" style="width:510px;margin-right:2em;margin-bottom:2em;">
+            <h3>Original Image</h3>
+            <img src="{{ url_for('cimage', filename = files[0]) }}" style="width:100%;clear:right;padding-top:1em;">
+        </div>
+
+        <div class="left panel main" style="width:510px;margin-right:2em;margin-bottom:2em;">
+            <h3>Area Quantification - Pigmented Region</h3>
+            <img src="{{ url_for('cimage', filename = files[1]) }}" style="width:100%;clear:right;padding-top:1em;">
+        </div>
+
+        <div class="left panel main" style="width:1000px;margin-right:2em;margin-bottom:2em;">
+            <h3>Area Quantification - Color Channel</h3>
+            <img src="{{ url_for('cimage', filename = files[2]) }}" style="width:100%;clear:right;padding-top:1em;">
+        </div>
+    </body>
+</html>

@@ -1,0 +1,12 @@
+.ipynb_checkpoints
+.ipynb_checkpoints/
+display/
+exports/
+masks/
+uploads/
+color_test/
+.vscode
+venv/
+env/
+__pycache__/
+.flaskenv

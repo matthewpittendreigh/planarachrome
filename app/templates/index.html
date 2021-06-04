@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>PlanaraChrome</title>
+        {% endif %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body> 
+        <div class="topnav">
+            <p class="left">PlanaraChrome</p>
+            <a class="active left upload" href="{{ url_for('index') }}">Upload</a>
+            <a class="left mask" href="{{ url_for('load_editor', threshold=113) }}">Mask</a>
+            <a class="left settings" href="{{ url_for('settings') }}">Settings</a>
+            <a class="left results" href="{{ url_for('export_data') }}">Results</a>
+            <a class="right" href="{{ url_for('help') }}">?</a>
+        </div>
+
+        <div class="main">
+            <div id="header" class="left panel" style="width:100%;box-sizing:border-box;display:block;">
+                <div class="left" style="width:25%;height:20%;"> 
+                    <form method="POST" action="{{ url_for('upload_files') }}" enctype="multipart/form-data">
+                        <p><input type="file" name="file" multiple></p>
+                        <p><input type="submit" value="Upload"></p>
+                    </form>
+                </div>
+
+                <div style="width:25%;height:20%;float:right"> 
+                    <form action="{{ url_for('delete_files') }}" method="post">
+                        <button name="delete_button" type="submit">Reset Files</button>
+                    </form>
+                </div>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div style="clear:both;padding-top: 1em;display: block;">
+                    <ul style="list-style-type: square;">
+                        {% for message in messages %}
+                        <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            {% endwith %}
+
+            {% if files %}
+                <div class="image_viewer" style="clear: both;padding-top: 2em;">
+                        {% for file in files %}
+                            <div style="float:left; margin-right:1%; margin-bottom:1em;width:19%;">
+                                <img class="upload_image" src="{{ url_for('display', filename=file) }}" style="width: 100%;" />
+                                <p style="background-color:black;color:white;width:100%;margin:0;">{{ file }}</p>
+                            </div>
+                        {% endfor %}
+                </div>
+                <script type="text/javascript">
+                    var i;  
+                    var images = document.getElementsByClassName("upload_image");
+                    var d = new Date();
+                    for (i = 0; i < images.length; i++) {  
+                        images[i].src = images[i].src + "?ver=" + d.getTime();
+                    } 
+                </script>
+            {% endif %}
+        </div>
+    </body>
+    <footer>
+        <p><center>Keene State College - BCI/AI & Pellettieri Labs</center></p>
+    </footer>
+</html>

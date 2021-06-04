@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>PlanaraChrome</title>
+        {% endif %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div class="topnav">
+            <p class="left">PlanaraChrome</p>
+            <a class="left upload" href="#" onclick="proceed_notice();return false;">Upload</a>
+            <a class="left mask" href="{{ url_for('mask_editor', mode='segmented') }}">Mask</a>
+            <a class="left settings" href="{{ url_for('settings') }}">Settings</a>
+            <a class="left results" href="{{ url_for('export_data') }}">Results</a>
+            <a class="active right" href="{{ url_for('help') }}">?</a>
+        </div>
+        <script>
+            function proceed_notice() {
+                var r = confirm("Returning to the file upload page will cause all\n"
+                                + "mask edits to be reset. Would you like to proceed?");
+                if (r == true) {
+                    window.location.href = "{{ url_for('index') }}";
+                } 
+            }
+        </script>
+        <div class="help main content" style="text-align: left;" >
+            <div id="help-title">
+                <h1>PlanaraChrome Usage Guide</h1>
+            </div>
+            <div id="file-upload">
+                
+            </div>
+            <div id="mask-editor">
+                <h3>Mask</h3>
+                <h4>Threshold:</h4>
+                <p>range: [0, 255]</p>
+                <p>info: Sets flood-fill threshold for displayed image(s). The optimal value is the intensity that will mask all background pixels, without affecting pixels within the specimen.</p>
+                <p>*This method for segmenting the image relies on the specimen having a bright outline surrounded by a dark background.</p>
+                <h4>Mode:</h4>
+                <p>options: raw, segmented - grey</p>
+                <p>info: Options for viewing specimen. Raw is the original color image without any edits. Segmented is the grayscale image with the current mask applied.</p>
+            </div>
+            <div id="export">
+                <h3>Settings</h3>
+                <h4>Intensity quantification</h4>
+                <p>default: 15</p>
+                <p>range: [0-100]</p>
+                <p>info: Percentile quantification is computed by selecting an intensity value from the distribution of pixels making up the specimen.</p>
+                <h4>Area quantification thresholds</h4>
+                <p>defaults:</p>
+                <p>red channel - min(120), max(152)</p>
+                <p>green channel - min(100), max(140)</p>
+                <p>blue channel - min(55), max(120)</p>
+                <p>range: [0,255] for each channel. Left (lower) value must be less than right (upper) value.</p>
+                <p>info: Area quantification is computed by determining which pixels are pigmented, and then dividing by the total number of pixels that make up the specimen. The area quantification thresholds specify the range of intensities that represent a pigmented region within each color channel. If a pixel in the image falls within the specified intensity ranges for at least two color channels, it is scored as pigmented.</p>
+            </div>
+        </div>
+    </body>
+    <footer>
+        <p><center>Keene State College - BCI/AI & Pellettieri Labs</center></p>
+    </footer>
+</html>

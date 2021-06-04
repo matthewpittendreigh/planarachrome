@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>PlanaraChrome</title>
+        {% endif %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type=text/javascript>
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
+    </head>
+    <body>
+        <div class="topnav">
+            <p class="left">PlanaraChrome</p>
+            <a class="left upload" href="#" onclick="proceed_notice();return false;">Upload</a>
+            <a class="left mask" href="{{ url_for('mask_editor', mode='segmented') }}">Mask</a>
+            <a class="left settings active" href="{{ url_for('settings') }}">Settings</a>
+            <a class="left results" href="{{ url_for('export_data') }}">Results</a>
+            <a class="right" href="{{ url_for('help') }}">?</a>
+        </div>
+        <script>
+            function proceed_notice() {
+                var r = confirm("Returning to the file upload page will cause all\n"
+                                + "mask edits to be reset. Would you like to proceed?");
+                if (r == true) {
+                    window.location.href = "{{ url_for('index') }}";
+                } 
+            }
+        </script>
+        <div class="main">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div style="clear:both;display: block;">
+                    <ul style="list-style-type: square;">
+                        {% for message in messages %}
+                        <li style="color:red">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            {% endwith %}
+            <form id="set-default-form" method="POST" action="{{ url_for('default_settings') }}">
+                <input type="submit" style="float:right" value="Restore Default Settings">
+            </form>
+            <form id="user-settings-form" method="POST" action="{{ url_for('apply_settings') }}">
+                <input type="submit" style="float:left" value="Apply Changes"><br>
+                <!--<h3>Segmentation</h3>
+                <label for="thr_input">Initial Threshold:</label>
+                <input type="text" id="thr_input" name="thr_input" value="{{ current_settings['initial_threshold'] }}" style="width:3em">
+                <br><br>-->
+
+                <h3>Intensity Quantification</h3>
+                <label for="percentile">Percentile:</label>
+                <input type="text" id="percentile" name="percentile" value="{{ current_settings['pigment_percentile'] }}"><br><br>
+
+                <h3>Area Quantification Thresholds</h3>
+                <label for="red_min">Red Channel (min/max):</label><br>
+                <input type="text" id="red_min" name="red_min" value="{{ current_settings['pigment_area_red_min'] }}">
+                <input type="text" id="red_max" name="red_max" value="{{ current_settings['pigment_area_red_max'] }}"><br><br>
+
+                <label for="green_min">Green Channel (min/max):</label><br>
+                <input type="text" id="green_min" name="green_min" value="{{ current_settings['pigment_area_green_min'] }}">
+                <input type="text" id="green_max" name="green_max" value="{{ current_settings['pigment_area_green_max'] }}"><br><br>
+
+                <label for="blue_min">Blue Channel (min/max):</label><br>
+                <input type="text" id="blue_min" name="blue_min" value="{{ current_settings['pigment_area_blue_min'] }}">
+                <input type="text" id="blue_max" name="blue_max" value="{{ current_settings['pigment_area_blue_max'] }}"><br><br>
+                
+                <label for="color-index">Test Color Settings</label><br>
+                <label for="color-index">Image Index: </label>
+                <input type="text" id="color-index" name="color-index" value="1" style="width:3em">
+                <button type="button" id="color-test-button">Test Threshold Values</button>
+                <br><br>
+
+                <h3>Histogram</h3>
+                <label for="bins">Bins:</label>
+                <input type="text" id="bins" name="bins" value="{{ current_settings['histogram_bins'] }}"><br><br>
+            
+                
+            </form>
+            <br>
+        </div>
+        <script>
+            $("#color-test-button").on('click', function (e) {
+                //e.preventDefault(); // avoid the form submit
+
+                //grab index value
+                var data = {index: $("#color-index").val(),
+                            red_min: $("#red_min").val(),
+                            red_max: $("#red_max").val(),
+                            green_min: $("#green_min").val(),
+                            green_max: $("#green_max").val(),
+                            blue_min: $("#blue_min").val(),
+                            blue_max: $("#blue_max").val()};
+
+                $.ajax({
+                    type: 'POST',
+                    url: $SCRIPT_ROOT + '/color-test',
+                    async: false,
+                    data: data,
+                    error: function(response){
+                        window.location.href = "/settings"
+                    },
+                    success: function(response){
+                        window.location.href = "/color-image"
+                    }
+                });
+            });
+        </script>
+    </body>
+    <footer>
+        <p><center>Keene State College - BCI/AI & Pellettieri Labs</center></p>
+    </footer>
+</html>

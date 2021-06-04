@@ -1,0 +1,120 @@
+body {
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+}
+
+/* topnav */
+.topnav a {
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav p {
+    color: white;
+    margin: 0;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: #b40f0f;
+    color: white;
+}
+
+.upload {
+    background-color: rgb(51, 30, 27);
+}
+.mask {
+    background-color: rgb(72, 53, 42);
+}
+.results {
+    background-color: rgb(139, 122, 93);
+}
+.settings {
+    background-color: rgb(90, 72, 39);
+}
+
+
+.main {
+    margin: 2em;
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+.center-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.panel {
+    background-color: rgb(230, 223, 211);
+    padding: 1em;
+}
+
+.slide {
+    clear:both
+}
+
+
+/* CSS for mask editor image scroller */
+.previous, .next {  
+    cursor: pointer;  
+    position: relative;  
+    top: -45px;
+    float: left;
+ 
+    padding: 16px;  
+
+    color: #333;
+    background-color: rgb(230, 223, 211);  
+    font-weight: bold;  
+    font-size: 18px;  
+    transition: 0.6s ease; 
+    border-radius: 0 3px 3px 0;  
+} 
+.next {  
+    float:right;
+    border-radius: 3px 0 0 3px;  
+}  
+.previous:hover, .next:hover {  
+    background-color: #333; 
+    color: white;
+} 
+
+.content {  
+    color: #000000;    
+    text-align: center; 
+}
+
+footer{
+    clear: both;
+    background-color: #333;
+    overflow: hidden;
+    color: white;
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>PlanaraChrome</title>
+        {% endif %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type=text/javascript>
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
+    </head>
+    
+    <body>
+        <div class="topnav">
+            <p class="left">PlanaraChrome</p>
+            <a class="left upload" href="#" onclick="proceed_notice();return false;">Upload</a>
+            <a class="active left mask" href="{{ url_for('mask_editor', mode='segmented') }}">Mask</a>
+            <a class="left settings" href="{{ url_for('settings') }}">Settings</a>
+            <a class="left results" href="{{ url_for('export_data') }}">Results</a>
+            <a class="right" href="{{ url_for('help') }}">?</a>
+        </div>
+        <script>
+            function proceed_notice() {
+                var r = confirm("Returning to the file upload page will cause all\n"
+                                + "mask edits to be reset. Would you like to proceed?");
+                if (r == true) {
+                    window.location.href = "{{ url_for('index') }}";
+                } 
+            }
+        </script>
+
+        <div class="main">
+            <div class="slidescontainer" style="width: 700px; clear: both; float: left;">
+            {% if files %}
+                {% for file in files: %}
+                    <div class="slide">
+                        {% if mode=="raw" %}
+                            <img src="{{ url_for('display', filename=file) }}" style="width: 100%;"/>
+                        {% elif mode=="segmented" or mode=="default" %}
+                            <img src="{{ url_for('masks', filename=file) }}" style="width: 100%;"/>
+                        {% endif %}
+                        <!-- https://jinja.palletsprojects.com/en/2.11.x/templates/#for 
+                            Mid-HTML python logic is provided by jinja and provides
+                            iteration variable to avoid needing custom code.-->
+                        <div class="content"><p>{{ loop.index }} of {{ loop.length }}</p></div>  
+                    </div>
+                {% endfor %}
+                <script type="text/javascript">
+                    var i;  
+                    var slides = document.getElementsByClassName("slide");
+                    var d = new Date();
+                    for (i = 0; i < slides.length; i++) {  
+                        slides[i].getElementsByTagName('img')[0].src = 
+                            slides[i].getElementsByTagName('img')[0].src + "?ver=" + d.getTime();
+                    } 
+                </script>
+            {% else %}
+                <div class="slide" >
+                    <img src="/static/images/noimage.png" style="width: 100%;">
+                    <div class="content">0 of 0</div>  
+                </div>
+                <script>
+                    setCookie("index", 1, 365);
+                </script>
+            {% endif %}
+                <button class="previous" onclick="nextSlide(-1)">&#10094;</button>
+                <button class="next" onclick="nextSlide(+1)">&#10095;</button>
+            </div>
+            {% if mode=="default" %}
+                <script>
+                    setCookie("index", 1, 365);
+
+                    thresh_init = getCookie("thresh_init"); 
+                    if(thresh_init == "" || thresh_init == null || thresh_init == "NaN") {
+                        setCookie("thresh_init", 113, 365);
+                        slide_index = getCookie("index");
+                    }
+
+                    var slides = document.getElementsByClassName("slide");
+                    var arr = Array.from({length:slides.length}, i => thresh_init);
+                    json_str = JSON.stringify(arr);
+                    setCookie("threshold", json_str, 365);
+                </script>
+            {% endif%}
+
+            <div class="left panel" style="width:400px; margin-left:2em;">
+                <div style="clear:both">
+                    <h3>Threshold</h3>
+                    <form id="threshold_form" class="left" style="width:100%;" method="POST" action="{{ url_for('threshold') }}">
+                        <input type="range" style="display:block;width:100%;height:10px;" min="0" max="255" value="113" name="thr_slider" id="thr_slider">
+                        <p style="display:block;">Value: <span id="thresh_val"></span></p>
+                        <input type="hidden" id="slide_url" name="slide_url" value="none">
+                        <input type="submit" style="float:left;margin-right:1em" value="Submit">
+                        <button type="button" id="apply-all-button" style="float:left;">Apply All</button><br>
+                    </form>
+                </div>
+            
+                <script> 
+                    var slider = document.getElementById("thr_slider");
+                    var output = document.getElementById("thresh_val");
+                    output.innerHTML = slider.value;
+
+                    slider.oninput = function() {
+                        output.innerHTML = this.value;
+                    }
+
+                    /*$(window).on('load', function() {
+                        slider.onchange = function() {
+                            $("#threshold_form").submit()
+                        }
+                    })*/
+
+                    $("#threshold_form").submit(function(e) {
+
+                        //e.preventDefault(); // avoid to execute the actual submit of the form.
+                        
+                        thresh = document.getElementById("thr_slider").value
+                        var json_str = getCookie("threshold");
+                        var thresh_array = JSON.parse(json_str);
+                        thresh_array[slide_index - 1] = parseInt(thresh)
+                        json_str = JSON.stringify(thresh_array);
+                        setCookie("threshold", json_str, 365);
+
+                        var form = $(this);
+                        $.ajax({
+                            type: form.attr('method'),
+                            url: $SCRIPT_ROOT + '/threshold',
+                            data: form.serialize(), // serializes the form's elements.
+                            success: function(){
+                            }
+                        });
+                    });
+
+                    $("#apply-all-button").on('click', function (e) {
+                        //e.preventDefault(); // avoid the form submit
+                        console.log('test')
+
+                        //grab index value
+                        thresh = document.getElementById("thr_slider").value
+                        data = {threshold_value: thresh}
+
+                        $.ajax({
+                            type: 'POST',
+                            url: $SCRIPT_ROOT + '/apply-init-threshold',
+                            async: false,
+                            data: data,
+                            success: function(response){
+                                window.location.href = "/load"
+                            }
+                        });
+                    });
+                </script>
+                </script>
+                <!-- https://www.w3schools.com/w3css/w3css_slideshow.asp
+                    Javascript logic for slideshow. Requires slide images to already be designated. -->
+                <script type="text/javascript">  
+                    var slide_index;
+                    slide_index = getCookie("index"); 
+                    if(slide_index == "" || slide_index == null || slide_index == "NaN") {
+                        setCookie("index", 1, 365);
+                        slide_index = getCookie("index");
+                    }
+
+                    var thresh_array;
+                    var json_str = getCookie("threshold");
+                    if(json_str == "" || json_str == null || json_str == "NaN") {
+                        var slides = document.getElementsByClassName("slide");
+                        var arr = Array.from({length:slides.length}, i => 113);
+                        json_str = JSON.stringify(arr);
+                        setCookie("threshold", json_str, 365);
+                        thresh_array = JSON.parse(json_str);
+                    }
+                    else{
+                        thresh_array = JSON.parse(json_str);
+                    }
+
+                    nextSlide(0);
+
+                    function nextSlide(increment) { //functions here and below
+                        slide_index=parseInt(slide_index)+increment;
+                        displaySlides(slide_index);
+                    }  
+            
+                    function displaySlides(n) {  
+                        var i;  
+                        var slides = document.getElementsByClassName("slide"); 
+                        if (n > slides.length) { slide_index = 1 }  
+                        if (n < 1) { slide_index = slides.length }  
+                        for (i = 0; i < slides.length; i++) {  
+                            slides[i].style.display = "none";  
+                        }  
+                        setCookie("index", slide_index, 365);
+                        slides[slide_index - 1].style.display = "block"; 
+                        document.getElementById("thr_slider").value = thresh_array[slide_index - 1];
+                        document.getElementById("thresh_val").innerHTML = thresh_array[slide_index - 1];
+                        document.getElementById("slide_url").value = slides[slide_index - 1].getElementsByTagName('img')[0].src;
+                    }
+                </script>
+
+                <div style="padding-top: 2em; clear:both">
+                    <h3>View</h3>
+                    <form method="POST" action="{{ url_for('change_mode') }}">
+                        {% if mode=="raw" %}
+                            <input type="radio" id="raw" name="view" value="raw" checked>
+                            <label for="raw">Raw</label><br>
+                            <input type="radio" id="gsegmented" name="view" value="gsegmented">
+                            <label for="gsegmented">Segmented - Grey</label><br>
+                        {% elif mode=="segmented" or "default"%}
+                            <input type="radio" id="raw" name="view" value="raw">
+                            <label for="raw">Raw</label><br>
+                            <input type="radio" id="gsegmented" name="view" value="gsegmented" checked>
+                            <label for="gsegmented">Segmented - Grey</label><br>
+                        {% endif %}
+                        <p><input type="submit" value="Submit"></p>
+                    </form>
+
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        <div style="clear:both;padding: 1em;display: block;">
+                            <ul style="list-style-type: square;padding:0;">
+                                {% for message in messages %}
+                                <li style="color:red">{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+        <!--
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script> window.jQuery || document.write('<script src="{{ 
+            url_for('static', filename='jquery.js') }}">\x3C/script>') </script>
+        -->
+
+    </body>
+    <footer>
+        <p><center>Keene State College - BCI/AI & Pellettieri Labs</center></p>
+    </footer>
+</html>
