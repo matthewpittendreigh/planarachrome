@@ -2,7 +2,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
   - [Windows Install Guide](#windows-install-guide)
-  - [OS X Install Guide](#os-x-install-guide)
+  - [Mac OS X Install Guide](#os-x-install-guide)
 - [More Info](#more-info)
 - [Contact](#contact)
 
@@ -22,116 +22,116 @@ PlanaraChrome is a Python web application. The detailed instructions below expla
 
 ## Windows Install Guide
 ##### 1. Install python
-Download and install python from the official website: [https://www.python.org/downloads/](https://www.python.org/downloads/) 
+Download and install Python: [https://www.python.org/downloads/](https://www.python.org/downloads/) 
 
-For detailed information about the python installation process: [https://docs.python.org/3/using/windows.html](https://docs.python.org/3/using/windows.html)  
+For detailed information about the Python installation process: [https://docs.python.org/3/using/windows.html](https://docs.python.org/3/using/windows.html)  
 
 ##### 2. Download and unzip project folder from GitHub
-Click the green code button and select download ZIP: [https://github.com/matthewpittendreigh/planarachrome](https://github.com/matthewpittendreigh/planarachrome)
+Click the green code button and select “Download ZIP”: [https://github.com/matthewpittendreigh/planarachrome](https://github.com/matthewpittendreigh/planarachrome)
 
 ##### 3. Open terminal
-*We will begin to configure the Planarian project and install its dependencies. To do this we will use the terminal associated with your operating system. For windows we’ll use PowerShell.*
+*To configure the project and install its dependencies, use the terminal associated with the Windows operating system (PowerShell):*
 
-Open the terminal. If you do not know how to do this, press the windows key to access the windows search box then type powershell. Run Windows PowerShell.
+Open the terminal. If you do not know how to do this, press the Windows key to access the Windows search box and then type “powershell”. Run Windows PowerShell.
 
 ##### 4. Change working directory
-*We need to tell the terminal that we would like to do operations within the downloaded project folder. To do this, will utilize the ‘cd’ or change directory command.*
-*Note: The specific folder we need to change to is the root folder of the project, otherwise described as the folder directly containing the file ‘planarachrome.py’.*
+*Utilize the “cd” or change directory command in terminal to perform operations within the downloaded project folder (specifically, the root folder for the project, or the folder directly containing the file “planarachrome.py”:*
 
-Method 1 – Navigate to the project folder in Finder. Type cd in the terminal then drag and drop the project folder into the terminal window. This should paste its path. 
+Method 1 – Navigate to the project folder in Finder. Type `cd` followed by a single space in the terminal, and then drag and drop the project folder into the terminal window. This will paste the folder’s path.
 
-Method 2 – Navigate to the project folder in your file explorer. Left click the path bar at the top of the window. It should convert to a folder path. You can then copy and paste that to complete the command.
+Method 2 – Navigate to the project folder in file explorer. Left click the path bar at the top of the window to obtain the folder path. Type `cd` followed by a single space in the terminal, and then copy and paste the path to complete the command.
 
 Example:
-cd C:\Users\YourUserName\Desktop\planarachrome
+```cd C:\Users\YourUserName\Desktop\planarachrome```
 
-If you have not done so, press enter to run the command.
+Press enter to run the command.
 
 ##### 5. Create virtual environment
-*A virtual environment is a container for python packages, created such that everything the project needs is contained within the project folder.*
+*To create a virtual environment (a container for Python packages, storing everything the project needs):*
 
-Ensure pip (the python package index) is up to date by running the following command,
-py -m pip install --upgrade pip
+Ensure pip (the Python package index) is up to date by running the command:
+```py -m pip install --upgrade pip```
 
-Then create the virtual environment,
-py -m venv env
+Then create the virtual environment by running the command:
+```py -m venv env```
 
 ##### 6. Activate virtual environment
-*Once the virtual environment is created, we need to activate it before installing any of the project requirements.*
+*After creating the virtual environment, activate it before installing any of the project requirements:*
 
-Run command to activate,
-.\env\Scripts\activate
+Run the command:
+```.\env\Scripts\activate```
 
 ##### 7. Install project dependencies
-Run the command,
-py -m pip install -r requirements.txt
+Run the command:
+```py -m pip install -r requirements.txt```
 
 *This may take a few minutes.*
 
 ##### 8. Run the project
-Run the command,
-py ./planarachrome.py
+Run the command:
+```py ./planarachrome.py```
 
-Python should now be hosting a local server that is running the web application. To use it, visit your local host at this link http://127.0.0.1:5000/.
+Python should now be hosting a local server that is running the web application. To use it, visit your local host at the following link: http://127.0.0.1:5000/.
 
 
-For running the project after the initial installation process, repeat steps 4, 6, and 8
+To run the project after the initial installation process, repeat steps 4, 6, and 8
 
 
 ## OS X Install Guide
 ##### 1. Install python
-Download and install python from the official website: [https://www.python.org/downloads/](https://www.python.org/downloads/) 
+Download and install Python: [https://www.python.org/downloads/](https://www.python.org/downloads/) 
 
-For detailed information about the python installation process: [https://docs.python.org/3/using/windows.html](https://docs.python.org/3/using/windows.html)  
+For detailed information about the Python installation process: [https://docs.python.org/3/using/windows.html](https://docs.python.org/3/using/windows.html) 
 
 ##### 2. Download and unzip project folder from GitHub
-Click the green code button and select download ZIP: [https://github.com/matthewpittendreigh/planarachrome](https://github.com/matthewpittendreigh/planarachrome)
+Click the green code button and select “Download ZIP”: [https://github.com/matthewpittendreigh/planarachrome](https://github.com/matthewpittendreigh/planarachrome)
 
 ##### 3. Open terminal
-*We will begin to configure the Planarian project and install its dependencies. To do this we will use the terminal associated with your operating system. For OS X it is simply called terminal.*
+*To configure the project and install its dependencies, use the terminal associated with the OS X operating system (Terminal):*
 
-Open the Terminal. If you do not know how to do this, Command + Space will open your spotlight. Search for terminal and it should autocomplete.
+Open the terminal. If you do not know how to do this, Command + Space will open spotlight. Search for “terminal” and double click to open.
 
 ##### 4. Change working directory
-*We need to tell the terminal that we would like to do operations within the downloaded project folder. To do this, will utilize the ‘cd’ or change directory command.*
-*Note: The specific folder we need to change to is the root folder of the project, otherwise described as the folder directly containing the file ‘planarachrome.py’.*
+*Utilize the “cd” or change directory command in terminal to perform operations within the downloaded project folder (specifically, the root folder for the project, or the folder directly containing the file “planarachrome.py”:*
 
-Method 1 – Navigate to the project folder in Finder. Type cd in the terminal then drag and drop the project folder into the terminal window. This should paste its path. 
+Method 1 – Navigate to the project folder in Finder. Type `cd` followed by a single space in the terminal, and then drag and drop the project folder into the terminal window. This will paste the folder’s path.
 
-Method 2 – Navigate to the project folder in Finder and right click the folder > Get Info. This should display the path which you can combine to create the command.
+Method 2 – Navigate to the project folder in Finder and control click the folder > Get Info. This will display the folder path (see “Where” under the “General” heading). Type `cd` followed by a single space in the terminal, and then copy and paste the path to complete the command.
 
 Example:
+```
 cd ~/Desktop/planarachrome
 cd /Users/YourUserName/Desktop/planarachrome
+```
 
-If you have not done so, press enter to run the command.
+Press enter to run the command.
 
 ##### 5. Create virtual environment
-*A virtual environment is a container for python packages, created such that everything the project needs is contained within the project folder.*
+*To create a virtual environment (a container for Python packages, storing everything the project needs):*
 
-Ensure pip (the python package index) is up to date by running the following command,
-python3 -m pip install --user --upgrade pip
+Ensure pip (the Python package index) is up to date by running the command:
+```python3 -m pip install --user --upgrade pip```
 
-Then create the virtual environment,
-python3 -m venv env
+Then create the virtual environment by running the command:
+```python3 -m venv env```
 
 ##### 6. Activate virtual environment
-*Once the virtual environment is created, we need to activate it before installing any of the project requirements.*
+*After creating the virtual environment, activate it before installing any of the project requirements:*
 
-Run command to activate,
-source env/bin/activate
+Run the command:
+```source env/bin/activate```
 
 ##### 7. Install project dependencies
-Run the command,
-python3 -m pip install -r requirements.txt
+Run the command:
+```python3 -m pip install -r requirements.txt```
 
 *This may take a few minutes.*
 
 ##### 8. Install project dependencies
-Run the command,
-python3 ./planarachrome.py
+Run the command:
+```python3 ./planarachrome.py```
 
-Python should now be hosting a local server that is running the web application. To use it, visit your local host at this link http://127.0.0.1:5000/.
+Python should now be hosting a local server that is running the web application. To use it, visit your local host at the following link: http://127.0.0.1:5000/.
 
 
 For running the project after the initial installation process, repeat steps 4, 6, and 8

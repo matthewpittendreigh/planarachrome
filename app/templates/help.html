@@ -55,7 +55,7 @@
                 <p>green channel - min(100), max(140)</p>
                 <p>blue channel - min(55), max(120)</p>
                 <p>range: [0,255] for each channel. Left (lower) value must be less than right (upper) value.</p>
-                <p>info: Area quantification is computed by determining which pixels are pigmented, and then dividing by the total number of pixels that make up the specimen. The area quantification thresholds specify the range of intensities that represent a pigmented region within each color channel. If a pixel in the image falls within the specified intensity ranges for at least two color channels, it is scored as pigmented.</p>
+                <p>info: The area quantification thresholds set the boundaries for an Otsu thresholding function, used to differentiate pigmented and unpigmented regions of the epidermis. In order for a pixel to be scored as pigmented, there must be agreement between the results for at least two of the three color channels. Area quantification is computed by determining which pixels are pigmented, and then dividing by the total number of pixels in the unmasked region of the image.</p>
             </div>
         </div>
     </body>
