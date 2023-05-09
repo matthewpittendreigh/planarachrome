@@ -65,7 +65,7 @@ Run the command:
 Run the command:
 ```py -m pip install -r requirements.txt```
 
-*This may take a few minutes.*
+*This may take 5+ minutes.*
 
 ##### 8. Run the project
 Run the command:
@@ -125,7 +125,7 @@ Run the command:
 Run the command:
 ```python3 -m pip install -r requirements.txt```
 
-*This may take a few minutes.*
+*This may take 5+ minutes.*
 
 ##### 8. Install project dependencies
 Run the command:
@@ -138,6 +138,7 @@ For running the project after the initial installation process, repeat steps 4, 
 
 
 # More Info
+For more information about planarian research at KSC: https://www.pellettierilab.com/
 
 
 # Contact
