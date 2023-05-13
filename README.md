@@ -28,6 +28,7 @@ For detailed information about the Python installation process: [https://docs.py
 
 ##### 2. Download and unzip project folder from GitHub
 Click the green code button and select “Download ZIP”: [https://github.com/matthewpittendreigh/planarachrome](https://github.com/matthewpittendreigh/planarachrome)
+Double click on the downloaded file to unzip it and move the unzipped folder to your desired location.
 
 ##### 3. Open terminal
 *To configure the project and install its dependencies, use the terminal associated with the Windows operating system (PowerShell):*
@@ -74,7 +75,7 @@ Run the command:
 Python should now be hosting a local server that is running the web application. To use it, visit your local host at the following link: http://127.0.0.1:5000/.
 
 
-To run the project after the initial installation process, repeat steps 4, 6, and 8
+To run the project after the initial installation process, repeat steps 3, 4, 6, and 8
 
 
 ## OS X Install Guide
@@ -85,6 +86,7 @@ For detailed information about the Python installation process: [https://docs.py
 
 ##### 2. Download and unzip project folder from GitHub
 Click the green code button and select “Download ZIP”: [https://github.com/matthewpittendreigh/planarachrome](https://github.com/matthewpittendreigh/planarachrome)
+Double click on the downloaded file to unzip it and move the unzipped folder to your desired location.
 
 ##### 3. Open terminal
 *To configure the project and install its dependencies, use the terminal associated with the OS X operating system (Terminal):*
@@ -127,14 +129,14 @@ Run the command:
 
 *This may take 5+ minutes.*
 
-##### 8. Install project dependencies
+##### 8. Run the project
 Run the command:
 ```python3 ./planarachrome.py```
 
 Python should now be hosting a local server that is running the web application. To use it, visit your local host at the following link: http://127.0.0.1:5000/.
 
 
-For running the project after the initial installation process, repeat steps 4, 6, and 8
+For running the project after the initial installation process, repeat steps 3, 4, 6, and 8
 
 
 # More Info
